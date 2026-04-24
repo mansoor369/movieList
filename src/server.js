@@ -1,7 +1,10 @@
-import express from "express"
+const express = require("express")
+
+require("dotenv").config();
+
 const app = express()
-const PORT = 3001;
-import movieRoutes from "./routes/movieRoutes.js"
+const PORT = process.env.PORT
+const movieRoutes = require("./routes/movieRoutes.js");
 
 app.use("/movie", movieRoutes);
 
