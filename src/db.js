@@ -1,9 +1,14 @@
-const { prismaClient } = require("@prisma/client");
+import { PrismaClient } from "@prisma/client";
+
+
 
 
 const prisma = new PrismaClient({
-    log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["errors"]
-})
+    log: 
+    process.env.NODE_ENV === "development" 
+    ? ["query", "error", "warn"] 
+     : ["error"]
+});
 
 const connectDB = async () => {
     try {
@@ -15,9 +20,6 @@ const connectDB = async () => {
     }
 }
 
-const disconnectDB = () => {
-    await prisma.$connect();
-}
 
 
-module.export = { prisma, connectDB, disconnectDB };
+export {connectDB,prisma};
