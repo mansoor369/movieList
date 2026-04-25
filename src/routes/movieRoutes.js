@@ -1,23 +1,16 @@
 import express from "express";
+import { DeleteMovie, getMovies, PostMovie, UpdateMovie } from "../controllers/movieController.js";
 
 const router = express.Router();
 
 
-router.get("/",(req,res)=>{
-    res.json({message:"hello"})
-})
+router.get("/",getMovies)
 
-router.post("/",(req,res)=>{
-    res.json({message:"hello"})
-})
+router.post("/",PostMovie)
 
-router.put("/",(req,res)=>{
-    res.json({message:"hello"})
-})
+router.put("/",UpdateMovie)
 
-router.delete("/",(req,res)=>{
-    res.json({message:"hello"})
-})
+router.delete("/",DeleteMovie)
 
 
 

@@ -1,8 +1,48 @@
+import { prisma } from "../db.js";
+import bcrypt from "bcryptjs";
 /** 
 *The Api function to Register the User in the Database */
-const register = async (req,res) => {
-res.json({message:"Registering the new user in progress"})
+const register = async (req, res) => {
+    const { email, password, name } = req.body;
+
+    const userExists = await prisma.user.findUnique({
+        where: { email: email }
+    })
+
+    if (userExists) {
+        return res.status(400).json({ message: "The user is already Registered" });
+    }
+
+
+    //Hash Password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+
+
+    // Create User
+    const user = await prisma.user.create({
+        data: {
+            name,
+            email,
+            password: hashedPassword
+        }
+
+    });
+
+    res.status(201).json({
+        status: "success",
+        data: {
+            user: {
+                id: user.id,
+                name: name,
+                email: email
+            }
+        }
+    })
+
+
 }
 
 
-export {register};
+export { register };
