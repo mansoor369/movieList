@@ -88,7 +88,7 @@ const Login = async (req, res) => {
 
 
 const Logout = async (req, res) => {
-    res.cookie("JWT_COOKIER", "", {
+    res.cookie("JWT_COOKIE", "", {
         expires: new Date(0),
         httpOnly: true
     })

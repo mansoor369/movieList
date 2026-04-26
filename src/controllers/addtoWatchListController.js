@@ -3,7 +3,7 @@ import { prisma } from "../db.js";
 
 
 const addToWatchList = async (req, res) => {
-    const { movieId, status, rating, notes, userId } = req.body;
+    const { movieId, status, rating, notes } = req.body;
 
 
     const movieExists = await prisma.movie.findUnique({
@@ -18,7 +18,7 @@ const addToWatchList = async (req, res) => {
     const existingWatchList = await prisma.watchListitem.findUnique({
         where: {
             userId_movieId: {
-                userId: userId,
+                userId: req.user.id,
                 movieId: movieId,
             }
         }
@@ -30,7 +30,7 @@ const addToWatchList = async (req, res) => {
 
     const watchlistItem = await prisma.watchListitem.create({
         data: {
-            userId,
+            userId:req.user.id,
             movieId,
             status: status || "PLAMNNING",
             rating,
