@@ -11,39 +11,37 @@ datasource db {
   provider = "postgresql"
 }
 
-
 /**
  * id is the name of the Variable + @id is letting prisma know
  * that "@id" is the id of the table
  * + uuid() allows us to create Standard Default id for users (completely unique for each user)
  */
 model User {
-  id String @id @default(uuid())
-  name String 
-  email String @unique 
-  password String
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
   createdAt DateTime @default(now())
 
   //relations
 
-  movies Movie[] @relation("Creator")
+  movies        Movie[]         @relation("Creator")
   WatchListItem WatchListitem[]
 }
 
-
 model Movie {
-  id String @id @default(uuid())
-  title String 
-  overview String
-  releaseyear Int
-  genre String[] @default([])
-  runtime Int?
-  posterUrl String
-  createdBy String
-  createdAt DateTime @default(now())
+  id             String          @id @default(uuid())
+  title          String
+  overview       String
+  releaseyear    Int
+  genre          String[]        @default([])
+  runtime        Int?
+  posterUrl      String
+  createdBy      String
+  createdAt      DateTime        @default(now())
   WatchListItems WatchListitem[]
   //relations
-  Creator User @relation("Creator",fields: [createdBy], references: [id],onDelete: Cascade)
+  Creator        User            @relation("Creator", fields: [createdBy], references: [id], onDelete: Cascade)
 }
 
 enum WatchListStatus {
@@ -54,17 +52,18 @@ enum WatchListStatus {
 }
 
 model WatchListitem {
-  id String @id @default(uuid())
-  userId String
-  movieId String
-  status WatchListStatus @default(PLANNED)
-  rating Int?
-  notes String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id        String          @id @default(uuid())
+  userId    String
+  movieId   String
+  status    WatchListStatus @default(PLANNED)
+  rating    Int?
+  notes     String
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @default(now())
 
   //relations
-  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
-  movie Movie @relation(fields: [movieId],references: [id],onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
 
+  @@unique([userId, movieId])
 }
